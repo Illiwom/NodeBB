@@ -1,4 +1,4 @@
-//disclosure: used ChatGPT to help write the test cases
+// disclosure: used ChatGPT to help write the test cases
 
 'use strict';
 
@@ -105,10 +105,10 @@ describe('Topic Events', () => {
         });
 
 
-        //disclosure: used ChatGPT to help write the test cases
+        // disclosure: used ChatGPT to help write the test cases
 
-        
-        //my test 1
+
+        // my test 1
         it('should handle non-existent topic gracefully', async () => {
             const nonExistentTopicId = 'nonExistentTopicId';
             await assert.doesNotReject(async () => {
@@ -116,7 +116,7 @@ describe('Topic Events', () => {
             });
         });
 
-        //my test 2
+        // my test 2
         it('should be idempotent', async () => {
             await topics.events.purge(topic.topicData.tid);
             await topics.events.purge(topic.topicData.tid); // Second call
@@ -126,7 +126,7 @@ describe('Topic Events', () => {
             assert(exists.every(exists => !exists));
         });
 
-        //my test 3
+        // my test 3
         it('should result in zero events for the topic', async () => {
             await topics.events.purge(topic.topicData.tid);
 
@@ -134,23 +134,21 @@ describe('Topic Events', () => {
             assert.strictEqual(eventsAfterPurge.length, 0);
         });
 
-        //my test 4
+        // my test 4
         it('should purge all events when no event IDs are provided', async () => {
             await topics.events.purge(topic.topicData.tid);
-        
+
             const eventsAfterPurge = await topics.events.get(topic.topicData.tid);
             assert.strictEqual(eventsAfterPurge.length, 0, 'All events should be purged when no event IDs are provided');
         });
 
-        //my test 5
+        // my test 5
         it('should only purge specified events when provided with event IDs', async () => {
             const subsetEventIds = eventIds.slice(0, 2); // Assuming eventIds is an array with at least 2 elements
             await topics.events.purge(topic.topicData.tid, subsetEventIds);
-        
+
             const remainingEvents = await topics.events.get(topic.topicData.tid);
             assert(subsetEventIds.every(id => !remainingEvents.includes(id)), 'Only specified events should be purged');
         });
-
-        
     });
 });
