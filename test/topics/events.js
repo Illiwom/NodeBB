@@ -109,7 +109,7 @@ describe('Topic Events', () => {
 
 
         // my test 1
-        it('should handle non-existent topic gracefully', async () => {
+        it('Should handle non-existent topic gracefully', async () => {
             const nonExistentTopicId = 'nonExistentTopicId';
             await assert.doesNotReject(async () => {
                 await topics.events.purge(nonExistentTopicId);
@@ -117,7 +117,7 @@ describe('Topic Events', () => {
         });
 
         // my test 2
-        it('should be idempotent', async () => {
+        it('Should be idempotent', async () => {
             await topics.events.purge(topic.topicData.tid);
             await topics.events.purge(topic.topicData.tid); // Second call
 
@@ -127,7 +127,7 @@ describe('Topic Events', () => {
         });
 
         // my test 3
-        it('should result in zero events for the topic', async () => {
+        it('Should result in zero events for the topic', async () => {
             await topics.events.purge(topic.topicData.tid);
 
             const eventsAfterPurge = await topics.events.get(topic.topicData.tid);
@@ -135,7 +135,7 @@ describe('Topic Events', () => {
         });
 
         // my test 4
-        it('should purge all events when no event IDs are provided', async () => {
+        it('Should purge all events when no event IDs are provided', async () => {
             await topics.events.purge(topic.topicData.tid);
 
             const eventsAfterPurge = await topics.events.get(topic.topicData.tid);
@@ -143,7 +143,7 @@ describe('Topic Events', () => {
         });
 
         // my test 5
-        it('should only purge specified events when provided with event IDs', async () => {
+        it('Should only purge specified events when provided with event IDs', async () => {
             const subsetEventIds = eventIds.slice(0, 2); // Assuming eventIds is an array with at least 2 elements
             await topics.events.purge(topic.topicData.tid, subsetEventIds);
 
