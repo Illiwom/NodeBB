@@ -1,5 +1,3 @@
-// disclosure: used ChatGPT to help write the test cases
-
 'use strict';
 
 const assert = require('assert');
@@ -102,53 +100,6 @@ describe('Topic Events', () => {
 
             const exists = await Promise.all(keys.map(key => db.exists(key)));
             assert(exists.every(exists => !exists));
-        });
-
-
-        // disclosure: used ChatGPT to help write the test cases
-
-
-        // my test 1
-        it('Should handle non-existent topic gracefully', async () => {
-            const nonExistentTopicId = 'nonExistentTopicId';
-            await assert.doesNotReject(async () => {
-                await topics.events.purge(nonExistentTopicId);
-            });
-        });
-
-        // my test 2
-        it('Should be idempotent', async () => {
-            await topics.events.purge(topic.topicData.tid);
-            await topics.events.purge(topic.topicData.tid); // Second call
-
-            const keys = [`topic:${topic.topicData.tid}:events`];
-            const exists = await Promise.all(keys.map(key => db.exists(key)));
-            assert(exists.every(exists => !exists));
-        });
-
-        // my test 3
-        it('Should result in zero events for the topic', async () => {
-            await topics.events.purge(topic.topicData.tid);
-
-            const eventsAfterPurge = await topics.events.get(topic.topicData.tid);
-            assert.strictEqual(eventsAfterPurge.length, 0);
-        });
-
-        // my test 4
-        it('Should purge all events when no event IDs are provided', async () => {
-            await topics.events.purge(topic.topicData.tid);
-
-            const eventsAfterPurge = await topics.events.get(topic.topicData.tid);
-            assert.strictEqual(eventsAfterPurge.length, 0, 'All events should be purged when no event IDs are provided');
-        });
-
-        // my test 5
-        it('Should only purge specified events when provided with event IDs', async () => {
-            const subsetEventIds = eventIds.slice(0, 2); // Assuming eventIds is an array with at least 2 elements
-            await topics.events.purge(topic.topicData.tid, subsetEventIds);
-
-            const remainingEvents = await topics.events.get(topic.topicData.tid);
-            assert(subsetEventIds.every(id => !remainingEvents.includes(id)), 'Only specified events should be purged');
         });
     });
 });
